@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export interface HttpRequest {
   body?: any;
 }
