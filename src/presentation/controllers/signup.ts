@@ -1,12 +1,14 @@
 import { HttpRequest, HttpResponse } from '../protocols/http';
 import { MissingParamError } from '../errors/missing-param-error';
+import { badRequest } from '../helpers/http';
+
 export class SignUpController {
   handle(httpRequest: HttpRequest): HttpResponse {
-    let body;
+    const requiredFields: Array<string> = ['name', 'email', 'password', 'passwordConfirmation'];
 
-    if (!httpRequest.body.name) body = new MissingParamError('name');
-    if (!httpRequest.body.email) body = new MissingParamError('email');
-
-    return { statusCode: 400, body };
+    for(const field of requiredFields) {
+      if (!httpRequest.body[field])
+        return badRequest(new MissingParamError(field));
+    }
   }
 }
